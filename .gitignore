@@ -41,3 +41,11 @@ app-example
 # generated native folders
 /ios
 /android
+
+# SQLite locale (Prisma migrations + node:sqlite) et variables d'env
+*.db
+*.db-journal
+.env
+
+# miroir local du plan de correction ( Obsidian = source de vérité)
+PLAN.md

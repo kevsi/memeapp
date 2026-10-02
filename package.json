@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
+    "@lottiefiles/dotlottie-react": "^0.13.5",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-seoul/masonry-list": "^1.4.2",
     "expo": "^57.0.26",
@@ -43,8 +44,10 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.4",
+    "dotenv": "^18.0.5",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~57.0.2",
+    "prisma": "^7.10.0",
     "typescript": "~6.0.3"
   },
   "private": true
