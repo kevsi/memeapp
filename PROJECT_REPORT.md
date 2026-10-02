@@ -17,7 +17,8 @@ Le projet **MonExpoApp** est une application mobile/web Expo moderne pour un ges
 - ✅ Page détails mème (modals, commentaires, fullscreen image)  
 - ✅ Image picker caméra/galerie  
 - ✅ Animations Reanimated 3  
-- ✅ Web parity search.web.tsx  
+- ✅ Web : écrans RN servis sur les 2 plateformes (variantes `.web.tsx` en classes Tailwind supprimées — Tailwind absent du projet, rendu HTML brut) *(2026-10-02)*
+- ✅ Entrée recherche (bouton loupe) dans le header du feed → `/extras/search` *(ajoutée 2026-10-02, audit F14)*  
 - ✅ 0 erreurs de compilation  
 
 ---
@@ -31,10 +32,9 @@ Le projet **MonExpoApp** est une application mobile/web Expo moderne pour un ges
 | `app/_layout.tsx` | ✅ | Root layout + Stack.Screen extras (headerShown: false) |
 | `app/extras/_layout.tsx` | ✅ NEW | Layout extras suppressing header |
 | `app/extras/search.tsx` | ✅ | Recherche Pinterest-style, image picker |
-| `app/extras/search.web.tsx` | ✅ | Web variant (2-col grid CSS) |
 | `app/meme/[id].tsx` | ✅ | Détail mème + modals (commentaires, fullscreen) |
-| `app/(tabs)/store.tsx` | ✅ | Store avec catégories + search button |
-| `app/(tabs)/index.tsx` | ✅ | Home page masonry grid |
+| `app/(tabs)/store.tsx` | ✅ | Store avec catégories + grille masonry |
+| `app/(tabs)/index.tsx` | ✅ | Home page masonry grid + bouton recherche header |
 | `lib/meme-colors.ts` | ✅ NEW | Palette couleurs MEME_COLORS |
 | `lib/theme.ts` | ✅ | THEME + NAV_THEME consommant MEME_COLORS |
 | `lib/ThemeContext.tsx` | ✅ | Context provider couleurs |
@@ -82,7 +82,6 @@ Le projet **MonExpoApp** est une application mobile/web Expo moderne pour un ges
 
 ### 5️⃣ **Page Store (tabs/store.tsx)**
 - 🏷️ Catégories avec icônes (Sparkles, Gamepad2, Trophy, etc.)
-- 🔎 Bouton recherche → navigate /extras/search
 - 📦 Masonry grid filtrée par catégorie
 - 💘 Like button sur chaque mème
 
@@ -107,8 +106,11 @@ fontSize = SCREEN_WIDTH > 600 ? 24 : 20;
 
 ### ✅ Tests Mobile
 
+- [x] **Home page (feed)**
+  - [x] Bouton recherche (header) navigue vers /extras/search
+  - [x] Clic mème ouvre /meme/[id]
+
 - [x] **Store page**
-  - [x] Search button navigue vers /extras/search
   - [x] Catégories filtrent les mèmes
   - [x] Clic mème ouvre /meme/[id]
   - [x] Bouton like fonctionne
@@ -138,11 +140,11 @@ fontSize = SCREEN_WIDTH > 600 ? 24 : 20;
 
 ### ✅ Tests Web
 
-- [x] **Search page web variant**
-  - [x] Layout CSS grid 2-col
-  - [x] Barre recherche fixed sticky
-  - [x] Navigation vers /meme/[id] via <a>
-  - [x] Camera button affiche alert (image picker mobile-only)
+- [x] **Search page web (variante RN servie, 2026-10-02)**
+  - [x] Barre recherche + sections affichées (thème light/dark)
+  - [x] Filtre + état vide « Aucun résultat pour … »
+  - [x] Navigation vers /meme/[id]
+  - [x] Camera button (image picker)
 
 ### ✅ ESLint
 
