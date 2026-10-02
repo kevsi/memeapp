@@ -67,13 +67,18 @@ export default function SearchScreen() {
     { id: '5', title: 'Gojo satoru', image: 'https://picsum.photos/800/600?random=34' },
   ];
 
+  const trimmedQuery = query.trim().toLowerCase();
+  const results = trimmedQuery
+    ? [...SUGGESTED, ...POPULAR].filter((t) => t.title.toLowerCase().includes(trimmedQuery))
+    : null;
+
   const numColumns = 2;
   const tileWidth = (SCREEN_WIDTH - 32 - 8) / numColumns; // 32 for padding (16*2), 8 for gap
   const tileHeight = tileWidth * 0.85;
 
   const renderTile = (item: { id: string; title: string; image: string }, index: number) => (
     <Animated.View
-      key={item.id}
+      key={item.image}
       entering={FadeInUp.delay(index * 30).duration(400)}
       layout={Layout.springify()}
     >
@@ -112,21 +117,44 @@ export default function SearchScreen() {
           </View>
         </View>
 
-        {/* Suggested section */}
-        <Animated.View style={{ paddingHorizontal: 16, marginBottom: 12 }} entering={FadeInUp.delay(100).duration(500)}>
-          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Des idées pour vous</Text>
-          <View style={styles.grid}>
-            {SUGGESTED.map((s, i) => renderTile(s, i))}
-          </View>
-        </Animated.View>
+        {results === null ? (
+          <>
+            {/* Suggested section */}
+            <Animated.View style={{ paddingHorizontal: 16, marginBottom: 12 }} entering={FadeInUp.delay(100).duration(500)}>
+              <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Des idées pour vous</Text>
+              <View style={styles.grid}>
+                {SUGGESTED.map((s, i) => renderTile(s, i))}
+              </View>
+            </Animated.View>
 
-        {/* Popular section */}
-        <Animated.View style={{ paddingHorizontal: 16, marginTop: 6 }} entering={FadeInUp.delay(200).duration(500)}>
-          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Populaire sur Pinterest</Text>
-          <View style={styles.grid}>
-            {POPULAR.map((p, i) => renderTile(p, i + SUGGESTED.length))}
+            {/* Popular section */}
+            <Animated.View style={{ paddingHorizontal: 16, marginTop: 6 }} entering={FadeInUp.delay(200).duration(500)}>
+              <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Populaire sur Pinterest</Text>
+              <View style={styles.grid}>
+                {POPULAR.map((p, i) => renderTile(p, i + SUGGESTED.length))}
+              </View>
+            </Animated.View>
+          </>
+        ) : results.length > 0 ? (
+          /* Résultats filtrés */
+          <Animated.View style={{ paddingHorizontal: 16 }} entering={FadeInUp.delay(100).duration(500)}>
+            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Résultats</Text>
+            <View style={styles.grid}>
+              {results.map((t, i) => renderTile(t, i))}
+            </View>
+          </Animated.View>
+        ) : (
+          /* État vide : aucun résultat */
+          <View style={styles.emptyState}>
+            <SearchIcon size={40} color={colors.muted} />
+            <Text style={[styles.emptyStateTitle, { color: colors.foreground }]}>
+              {"Aucun résultat pour « " + query + " »"}
+            </Text>
+            <Text style={[styles.emptyStateSubtitle, { color: colors.muted }]}>
+              Essaie un autre mot-clé.
+            </Text>
           </View>
-        </Animated.View>
+        )}
       </ScrollView>
     </View>
   );
