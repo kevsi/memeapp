@@ -1,4 +1,5 @@
 import { AppearanceToggle } from '@/components/AppearanceToggle';
+import useStats from '@/hooks/useStats';
 import { useThemeContext } from '@/lib/ThemeContext';
 import { THEME } from '@/lib/theme';
 import { ArrowRight, Flame, Target, Trophy, Users } from 'lucide-react-native';
@@ -18,6 +19,11 @@ export default function ProfileScreen() {
   const { theme } = useThemeContext();
   const router = useRouter();
   const colors = THEME[theme as 'light' | 'dark'];
+  const stats = useStats();
+
+  // 10250 → « 10.3K », 9800 → « 9.8K », absent → « — »
+  const fmt = (n?: number) =>
+    n == null ? '—' : n >= 1000 ? `${Math.round(n / 100) / 10}K` : `${n}`;
 
   const menuOptions: MenuOption[] = [
     { label: 'Settings', route: '/extras/settings' },
@@ -80,7 +86,7 @@ export default function ProfileScreen() {
                 <Users color={colors.primary} size={20} />
               </View>
               <View style={{ alignItems: 'flex-end' }}>
-                <Text style={{ fontSize: 24, fontWeight: '900', color: colors.foreground }}>10K</Text>
+                <Text style={{ fontSize: 24, fontWeight: '900', color: colors.foreground }}>{fmt(stats?.followers)}</Text>
               </View>
             </View>
             <Text style={{ fontSize: 12, fontWeight: '600', color: `${colors.foreground}80` }}>Followers</Text>
@@ -88,7 +94,7 @@ export default function ProfileScreen() {
               <View style={{ height: 4, borderRadius: 4, width: '70%', backgroundColor: `${colors.primary}40` }}>
                 <View style={{ height: 4, borderRadius: 4, width: '80%', backgroundColor: colors.primary }} />
               </View>
-              <Text style={{ fontSize: 10, fontWeight: 'bold', marginLeft: 8, color: colors.primary }}>+12%</Text>
+              <Text style={{ fontSize: 10, fontWeight: 'bold', marginLeft: 8, color: colors.primary }}>{stats ? `+${stats.followersDelta}%` : '—'}</Text>
             </View>
           </Animated.View>
 
@@ -102,7 +108,7 @@ export default function ProfileScreen() {
                 <Trophy color="#FF6B35" size={20} />
               </View>
               <View style={{ alignItems: 'flex-end' }}>
-                <Text style={{ fontSize: 24, fontWeight: '900', color: colors.foreground }}>10K</Text>
+                <Text style={{ fontSize: 24, fontWeight: '900', color: colors.foreground }}>{fmt(stats?.defisWon)}</Text>
               </View>
             </View>
             <Text style={{ fontSize: 12, fontWeight: '600', color: `${colors.foreground}80` }}>Défis Won</Text>
@@ -110,7 +116,7 @@ export default function ProfileScreen() {
               <View style={{ height: 4, borderRadius: 4, width: '70%', backgroundColor: '#FF6B3540' }}>
                 <View style={{ height: 4, borderRadius: 4, width: '65%', backgroundColor: '#FF6B35' }} />
               </View>
-              <Text style={{ fontSize: 10, fontWeight: 'bold', marginLeft: 8, color: '#FF6B35' }}>+8%</Text>
+              <Text style={{ fontSize: 10, fontWeight: 'bold', marginLeft: 8, color: '#FF6B35' }}>{stats ? `+${stats.defisDelta}%` : '—'}</Text>
             </View>
           </Animated.View>
         </View>
@@ -126,7 +132,7 @@ export default function ProfileScreen() {
                 <Target color={colors.primary} size={24} />
               </View>
               <View>
-                <Text style={{ fontSize: 18, fontWeight: '900', color: colors.foreground }}>7 Days Streak 🔥</Text>
+                <Text style={{ fontSize: 18, fontWeight: '900', color: colors.foreground }}>{stats ? `${stats.streakDays} Days Streak 🔥` : '—'}</Text>
                 <Text style={{ fontSize: 12, fontWeight: '500', marginTop: 2, color: `${colors.foreground}80` }}>Keep posting to maintain your streak!</Text>
               </View>
             </View>

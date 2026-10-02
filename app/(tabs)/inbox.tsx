@@ -9,7 +9,7 @@ import { FlatList, RefreshControl, SafeAreaView, StyleSheet, Text, TouchableOpac
 export default function InboxScreen() {
   const { theme } = useThemeContext();
   const colors = THEME[theme as 'light' | 'dark'];
-  const { notifications, loading, refreshing, refresh, markAllRead, markOneRead } = useNotifications();
+  const { notifications, loading, refreshing, error, refresh, markAllRead, markOneRead } = useNotifications();
 
   const handleMarkAll = useCallback(async () => {
     await markAllRead();
@@ -22,7 +22,12 @@ export default function InboxScreen() {
           <Mail size={20} color={colors.foreground} />
           <Text style={[styles.title, { color: colors.foreground }]}>Inbox</Text>
         </View>
-        <TouchableOpacity onPress={handleMarkAll} style={styles.markAllBtn}>
+        <TouchableOpacity
+          onPress={handleMarkAll}
+          style={styles.markAllBtn}
+          accessibilityLabel="Tout marquer comme lu"
+          accessibilityRole="button"
+        >
           <Check size={16} color={colors.primaryForeground} />
         </TouchableOpacity>
       </View>
@@ -46,11 +51,25 @@ export default function InboxScreen() {
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         contentContainerStyle={{ padding: 16, paddingBottom: 120 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={colors.primary} />}
-        ListEmptyComponent={() => (
-          <View style={styles.empty}>
-            <Text style={{ color: colors.foreground, fontWeight: '600' }}>Aucune notification</Text>
-          </View>
-        )}
+        ListEmptyComponent={() =>
+          error ? (
+            <View style={styles.empty}>
+              <Text style={{ color: colors.foreground, fontWeight: '600' }}>Notifications indisponibles</Text>
+              <Text style={{ color: colors.foreground, opacity: 0.6, marginTop: 4 }}>Impossible de joindre le serveur.</Text>
+              <TouchableOpacity
+                onPress={refresh}
+                style={[styles.retryBtn, { backgroundColor: colors.primary }]}
+                accessibilityLabel="Réessayer le chargement des notifications"
+              >
+                <Text style={{ color: colors.primaryForeground, fontWeight: '700' }}>Réessayer</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.empty}>
+              <Text style={{ color: colors.foreground, fontWeight: '600' }}>Aucune notification</Text>
+            </View>
+          )
+        }
       />
     </SafeAreaView>
   );
@@ -62,4 +81,5 @@ const styles = StyleSheet.create({
   title: { fontSize: 20, fontWeight: '900' },
   markAllBtn: { padding: 8, borderRadius: 8 },
   empty: { marginTop: 40, alignItems: 'center' },
+  retryBtn: { marginTop: 12, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
 });

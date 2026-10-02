@@ -85,6 +85,9 @@ const MemeTemplateCard = memo(({ template, onPress, colors, index }: { template:
   return (
     <TouchableOpacity
       onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={template.title?.replace(/\n/g, ' ')}
+      accessibilityHint="Ouvre le détail du mème"
       style={{
         borderRadius: 16,
         overflow: 'hidden',

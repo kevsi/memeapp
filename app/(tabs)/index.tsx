@@ -23,6 +23,7 @@ import { Image } from "expo-image";
 import { useThemeContext } from "@/lib/ThemeContext";
 import { THEME } from "@/lib/theme";
 import { MEME_COLORS } from "@/lib/meme-colors";
+import { Search } from "lucide-react-native";
 
 // ---------------------------
 // Types
@@ -145,6 +146,7 @@ MemeItem.displayName = "MemeItem";
 
 export default function HomeScreen() {
   const { width, height } = useWindowDimensions();
+  const router = useRouter();
   const { theme } = useThemeContext();
   const colors = THEME[theme as 'light' | 'dark'];
   const [memes, setMemes] = useState<MemeCard[]>(MEMES);
@@ -192,6 +194,15 @@ export default function HomeScreen() {
             pulseAnimation
           ]} 
         />
+        <View style={{ flex: 1 }} />
+        <Pressable
+          onPress={() => router.push("/extras/search")}
+          accessibilityLabel="Rechercher"
+          accessibilityRole="button"
+          hitSlop={8}
+        >
+          <Search color={colors.foreground} size={22} />
+        </Pressable>
       </Animated.View>
 
       <ScrollView

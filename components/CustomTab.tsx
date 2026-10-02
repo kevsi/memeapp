@@ -128,6 +128,9 @@ paddingBottom: bottom > 0 ? bottom - 4 : 8,
           <Pressable
             key={route.key}
             onPress={onPress}
+            accessibilityLabel={label}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isFocused }}
             style={({ pressed }) => [
               styles.pressable,
               {

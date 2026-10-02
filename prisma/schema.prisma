@@ -1,0 +1,32 @@
+// Schéma Prisma 7 — SQLite (memeapp)
+// Schéma + migrations uniquement : le client Prisma n'est pas utilisé à
+// l'exécution (limitation Expo API routes = pas de binaire natif bundle),
+// les requêtes passent par node:sqlite (lib/db.ts).
+// Doc : https://pris.ly/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  memeId    String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model UserStat {
+  userId         String @id
+  username       String
+  followers      Int
+  followersDelta Int
+  defisWon       Int
+  defisDelta     Int
+  streakDays     Int
+}
