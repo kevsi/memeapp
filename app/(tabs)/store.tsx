@@ -5,7 +5,7 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import { useRouter } from 'expo-router';
 import { Heart, Sparkles, Gamepad2, Trophy, Laugh, Zap } from 'lucide-react-native';
 import LottieView from 'lottie-react-native';
-import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions, Animated } from 'react-native';
 import { Image } from 'expo-image';
 
@@ -32,7 +32,7 @@ const CATEGORIES: Category[] = [
 
 // ---------------- Category Button ----------------
 const CategoryButton = memo(({ category, isSelected, onPress, colors }: { category: Category; isSelected: boolean; onPress: () => void; colors: any }) => {
-  const scale = useRef(new Animated.Value(1)).current;
+  const [scale] = useState(() => new Animated.Value(1));
 
   useEffect(() => {
     if (isSelected) {
@@ -106,7 +106,7 @@ const MemeTemplateCard = memo(({ template, onPress, colors, index }: { template:
         priority="high"
         recyclingKey={template.id}
       />
-      <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.35)', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 8 }}>
+      <View style={{ ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0,0,0,0.35)', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 8 }}>
         <Text style={{ fontSize: 20, fontWeight: '900', color: colors.cardForeground, textAlign: 'center', letterSpacing: 1 }} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.75}>
           {template.title}
         </Text>

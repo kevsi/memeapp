@@ -1,11 +1,11 @@
 import { useThemeContext } from "@/lib/ThemeContext";
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { Animated, Pressable, StyleSheet } from "react-native";
 
 export function AppearanceToggle() {
   const { theme, toggleTheme } = useThemeContext();
   const isDark = theme === "dark";
-  const toggleAnim = useRef(new Animated.Value(isDark ? 1 : 0)).current;
+  const [toggleAnim] = useState(() => new Animated.Value(isDark ? 1 : 0));
 
   const toggle = () => {
     const toValue = isDark ? 0 : 1;

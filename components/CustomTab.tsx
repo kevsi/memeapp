@@ -1,5 +1,5 @@
 import { useTheme } from '@/lib/ThemeContext'; // Utilisez votre nouveau ThemeContext
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { BottomTabBarProps } from 'expo-router/js-tabs';
 import { Edit, Home, Mail, Store, Trophy, User } from 'lucide-react-native';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
