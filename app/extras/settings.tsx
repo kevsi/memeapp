@@ -99,6 +99,10 @@ export default function SettingsScreen() {
               <Switch
                 value={settings.notifications[item.key]}
                 onValueChange={() => handleNotificationToggle(item.key)}
+                trackColor={{ false: `${colors.foreground}30`, true: colors.primary }}
+                thumbColor={settings.notifications[item.key] ? colors.primaryForeground : colors.foreground}
+                ios_backgroundColor={`${colors.foreground}30`}
+                accessibilityLabel={item.label}
               />
             </View>
           ))}
@@ -133,6 +137,10 @@ export default function SettingsScreen() {
               <Switch
                 value={settings.privacy[item.key]}
                 onValueChange={() => handlePrivacyToggle(item.key)}
+                trackColor={{ false: `${colors.foreground}30`, true: colors.primary }}
+                thumbColor={settings.privacy[item.key] ? colors.primaryForeground : colors.foreground}
+                ios_backgroundColor={`${colors.foreground}30`}
+                accessibilityLabel={item.label}
               />
             </View>
           ))}
